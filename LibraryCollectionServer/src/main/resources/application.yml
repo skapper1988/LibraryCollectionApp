@@ -1,0 +1,11 @@
+server:
+  port: 9999
+  address: localhost
+  
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  
