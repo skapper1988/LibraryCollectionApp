@@ -9,5 +9,6 @@ import com.satish.kappera.developer.library.model.Book;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 	
+	
 
 }

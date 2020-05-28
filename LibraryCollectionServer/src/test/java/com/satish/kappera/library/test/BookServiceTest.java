@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -69,7 +70,6 @@ public class BookServiceTest {
 
 	}
 
-	
 	@Test
 	public void whenCreateBook_thenReturnNewBook() {
 
@@ -95,33 +95,31 @@ public class BookServiceTest {
 		assertThat(dbbook.getLibrary().getLibraryId() == 1L);
 
 	}
-	
-	
+
 	@Test
 	public void whenUpdateBook_thenReturnUBook() {
 
-		
 		library = entityManager.find(Library.class, 1L);
 		Book book1 = new Book();
+		Random rand = new Random();
+		long id = rand.nextLong();
 		book1.setAuthor("William Shakes");
 		book1.setGenre("ROmantic");
 		book1.setName("All is Well Thats end Well");
 		library.addBookToLibrary(book1);
 		entityManager.persist(library);
-	
+
 		entityManager.flush();
-		
+
+		library = entityManager.find(Library.class, 1L);
+		Book newBook = library.getBooks().get(0);
+		newBook.setAuthor("Ayan Rynd");
+		bookServiceImpl.updateBookToLibrary(Optional.of(library.getLibraryId()), library.getBooks().get(0).getId(),
+				newBook);
 		library = entityManager.find(Library.class, 1L);
 
-		Book newBook = new Book();
-		newBook.setAuthor("Ayan Rynd");
-		
-		 bookServiceImpl.updateBookToLibrary(Optional.of(library.getLibraryId()), library.getBooks().get(0).getId(), newBook);
-		
-		 library = entityManager.find(Library.class, 1L);
-		 
-		 assertThat(library.getBooks().get(0).getAuthor().equals("Ayan Rynd"));
-	
+		assertThat(library.getBooks().get(0).getAuthor().equals("Ayan Rynd"));
+
 	}
 
 }
